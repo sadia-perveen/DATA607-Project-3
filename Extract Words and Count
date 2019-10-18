@@ -1,0 +1,15 @@
+library(plyr)
+
+JOBLIST <- as.data.frame(readr::read_csv("https://raw.githubusercontent.com/joshuargst/607project3/master/joblistings.csv"))
+
+uW <- unique(data.frame(strsplit(gsub("[^[:alnum:] ]", " ", toupper(JOBLIST[1,]$description)), " +")))
+names(uW) <- c("Skills")
+
+for(i in 2:nrow(JOBLIST)){ #nrow(JOBLIST)
+  newDf <- unique(data.frame(strsplit(toupper(gsub("[^[:alnum:] ]", " ", JOBLIST[i,]$description)), " +")))
+  names(newDf) <- c("Skills")
+  uW <- rbind(uW, newDf)
+  print(i)
+}
+
+count(uW, vars = "Skills")
